@@ -1,0 +1,105 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import NetworkMotif from './NetworkMotif.astro';
+import { site, nap, hours, services } from '../data/site';
+
+const year = new Date().getFullYear();
+const primaryServices = services.slice(0, 6);
+---
+<footer class="relative overflow-hidden bg-navy-900 text-navy-100">
+  <div class="pointer-events-none absolute inset-0 opacity-[0.15]" aria-hidden="true">
+    <NetworkMotif />
+  </div>
+
+  <div class="container-page relative py-16 lg:py-20">
+    <div class="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
+      <!-- Brand + about -->
+      <div>
+        <span class="inline-flex items-center rounded-xl bg-white px-3 py-2">
+          <Logo class="h-14" />
+        </span>
+        <p class="mt-5 max-w-xs text-sm leading-relaxed text-navy-200">
+          {site.description}
+        </p>
+        <p class="mt-5 text-xs font-medium uppercase tracking-wider text-red-300">
+          100% Ghanaian-owned · Est. {site.founded}
+        </p>
+      </div>
+
+      <!-- Services -->
+      <nav aria-label="Services">
+        <h2 class="font-display text-sm font-semibold uppercase tracking-wider text-white">
+          Services
+        </h2>
+        <ul class="mt-5 space-y-3 text-sm">
+          {
+            primaryServices.map((s) => (
+              <li>
+                <a href={`/services/${s.slug}`} class="text-navy-200 transition hover:text-red-300">
+                  {s.short}
+                </a>
+              </li>
+            ))
+          }
+          <li>
+            <a href="/services" class="font-medium text-red-300 transition hover:text-red-200">
+              All services →
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Company -->
+      <nav aria-label="Company">
+        <h2 class="font-display text-sm font-semibold uppercase tracking-wider text-white">
+          Company
+        </h2>
+        <ul class="mt-5 space-y-3 text-sm">
+          <li><a href="/about" class="text-navy-200 transition hover:text-red-300">About Skyboom</a></li>
+          <li><a href="/services" class="text-navy-200 transition hover:text-red-300">What We Do</a></li>
+          <li><a href="/#health-safety" class="text-navy-200 transition hover:text-red-300">Health &amp; Safety</a></li>
+          <li><a href="/#faq" class="text-navy-200 transition hover:text-red-300">FAQ</a></li>
+          <li><a href="/contact" class="text-navy-200 transition hover:text-red-300">Contact</a></li>
+        </ul>
+      </nav>
+
+      <!-- Contact / NAP -->
+      <div>
+        <h2 class="font-display text-sm font-semibold uppercase tracking-wider text-white">
+          Get in touch
+        </h2>
+        <address class="mt-5 space-y-4 text-sm not-italic text-navy-200">
+          <p class="flex items-start gap-3">
+            <Icon name="mapPin" size={18} class="mt-0.5 shrink-0 text-red-300" />
+            <span>
+              {nap.name}<br />
+              {nap.streetAddress}<br />
+              {nap.locality}, {nap.country}
+            </span>
+          </p>
+          <p class="flex items-center gap-3">
+            <Icon name="phone" size={18} class="shrink-0 text-red-300" />
+            <a href={`tel:${nap.phoneE164}`} class="transition hover:text-red-300">{nap.phoneDisplay}</a>
+          </p>
+          <p class="flex items-center gap-3">
+            <Icon name="mail" size={18} class="shrink-0 text-red-300" />
+            <a href={`mailto:${site.email}`} class="transition hover:text-red-300">{site.email}</a>
+          </p>
+          <p class="flex items-start gap-3">
+            <Icon name="clock" size={18} class="mt-0.5 shrink-0 text-red-300" />
+            <span>{hours.display}</span>
+          </p>
+        </address>
+      </div>
+    </div>
+
+    <div class="mt-14 flex flex-col gap-4 border-t border-white/10 pt-8 text-xs text-navy-300 sm:flex-row sm:items-center sm:justify-between">
+      <p>© {year} {site.legalName}. All rights reserved.</p>
+      <p class="flex items-center gap-2">
+        <Icon name="mapPin" size={14} class="text-red-300" />
+        Building telecom infrastructure across Ghana &amp; West Africa.
+      </p>
+    </div>
+  </div>
+</footer>

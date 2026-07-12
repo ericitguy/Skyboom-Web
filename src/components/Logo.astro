@@ -1,0 +1,21 @@
+---
+/**
+ * Skyboom logo. Renders the real brand logo image from /public/logo.png.
+ * The `variant` prop is kept for API compatibility but no longer changes colour
+ * (the artwork is fixed); legibility on dark surfaces is handled by the white
+ * backing chip applied where the logo is used (Header / Footer).
+ */
+interface Props {
+  variant?: 'light' | 'dark';
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+---
+<img
+  src="/logo.png"
+  alt="Skyboom Ghana Limited — 100% Telecom Solution"
+  width="240"
+  height="150"
+  class={`block w-auto max-w-none ${className}`}
+  decoding="async"
+/>

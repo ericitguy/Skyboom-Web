@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import NetworkMotif from '../components/NetworkMotif.astro';
+
+const seo = {
+  title: 'Page Not Found | Skyboom Ghana Limited',
+  description: 'The page you are looking for could not be found. Return to Skyboom Ghana Limited’s homepage or explore our telecom infrastructure services.',
+  path: '/404',
+  noindex: true,
+};
+---
+<BaseLayout {...seo}>
+  <section class="relative isolate flex min-h-[80vh] items-center overflow-hidden bg-navy-900 pt-20 text-white">
+    <div class="absolute inset-0 -z-10 opacity-40" aria-hidden="true"><NetworkMotif /></div>
+    <div class="container-page text-center">
+      <p class="font-display text-7xl font-bold text-red-400 sm:text-8xl">404</p>
+      <h1 class="mt-4 font-display text-3xl font-bold sm:text-4xl">This connection dropped</h1>
+      <p class="mx-auto mt-4 max-w-md text-lg text-navy-100">
+        The page you're looking for doesn't exist or has moved. Let's get you
+        back on the network.
+      </p>
+      <div class="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <Button href="/" variant="primary" size="lg">Back to home</Button>
+        <Button href="/services" variant="outline-light" size="lg">View services</Button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

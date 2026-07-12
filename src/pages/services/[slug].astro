@@ -1,0 +1,185 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Button from '../../components/Button.astro';
+import Icon from '../../components/Icon.astro';
+import NetworkMotif from '../../components/NetworkMotif.astro';
+import CTASection from '../../components/CTASection.astro';
+import { services } from '../../data/site';
+import { serviceSchema, breadcrumbSchema } from '../../lib/schema';
+import fibreGlow from '../../assets/fibre-glow.png';
+import safetyBuild from '../../assets/safety-build.png';
+
+export function getStaticPaths() {
+  return services.map((service) => ({
+    params: { slug: service.slug },
+    props: { service },
+  }));
+}
+
+const { service } = Astro.props;
+const path = `/services/${service.slug}`;
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Services', path: '/services' },
+  { name: service.short, path },
+];
+
+// Related services (next three in the list, wrapping)
+const idx = services.findIndex((s) => s.slug === service.slug);
+const related = [1, 2, 3].map((o) => services[(idx + o) % services.length]);
+
+// Alternate the supporting image so pages don't all look identical
+const supportImage = idx % 2 === 0 ? fibreGlow : safetyBuild;
+
+const schemas = [
+  serviceSchema({ name: service.title, description: service.seoDescription, path }),
+  breadcrumbSchema(crumbs),
+];
+---
+<BaseLayout
+  title={service.seoTitle}
+  description={service.seoDescription}
+  path={path}
+  imageAlt={`${service.title} by Skyboom Ghana Limited`}
+  schemas={schemas}
+>
+  <!-- Hero -->
+  <section class="relative isolate overflow-hidden bg-navy-900 pt-20 text-white">
+    <div class="absolute inset-0 -z-10 opacity-50" aria-hidden="true"><NetworkMotif /></div>
+    <div class="absolute inset-0 -z-10 bg-gradient-to-b from-navy-900/40 to-navy-900"></div>
+    <div class="pointer-events-none absolute -right-24 -top-16 -z-10 h-96 w-96 rounded-full bg-red-600/20 blur-3xl" aria-hidden="true"></div>
+
+    <div class="container-page py-20 lg:py-24">
+      <div data-reveal><Breadcrumbs crumbs={crumbs} /></div>
+      <div class="mt-8 grid items-end gap-8 lg:grid-cols-[1fr_auto]">
+        <div class="max-w-3xl">
+          <div
+            class="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-red-400/15 text-red-300"
+            data-reveal
+          >
+            <Icon name={service.icon} size={28} />
+          </div>
+          <h1 class="font-display text-4xl font-bold leading-tight sm:text-5xl lg:text-[3.4rem]" data-reveal style="--reveal-delay:60ms">
+            {service.title}
+          </h1>
+          <p class="mt-6 max-w-2xl text-lg leading-relaxed text-navy-100 sm:text-xl" data-reveal style="--reveal-delay:140ms">
+            {service.summary}
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Body -->
+  <section class="py-20 lg:py-24">
+    <div class="container-page grid gap-14 lg:grid-cols-[1.6fr_1fr] lg:gap-16">
+      <!-- Main copy -->
+      <div>
+        <div class="prose-block space-y-6 text-lg leading-relaxed text-navy-600">
+          <p class="text-xl leading-relaxed text-navy-800" data-reveal>{service.intro}</p>
+        </div>
+
+        <h2 class="mt-14 font-display text-2xl font-bold text-navy-800 sm:text-3xl" data-reveal>
+          Our approach
+        </h2>
+        <ul class="mt-6 space-y-4" data-reveal style="--reveal-delay:80ms">
+          {
+            service.approach.map((point) => (
+              <li class="flex items-start gap-3.5">
+                <Icon name="checkCircle" size={22} class="mt-0.5 shrink-0 text-red-500" />
+                <span class="text-navy-600">{point}</span>
+              </li>
+            ))
+          }
+        </ul>
+
+        <div class="mt-14 overflow-hidden rounded-3xl border border-navy-100 shadow-lg" data-reveal>
+          <Image
+            src={supportImage}
+            alt={`${service.title} in Ghana — engineered and delivered by Skyboom`}
+            class="h-full w-full object-cover"
+            widths={[600, 900, 1200]}
+            sizes="(min-width: 1024px) 62vw, 100vw"
+          />
+        </div>
+
+        <h2 class="mt-14 font-display text-2xl font-bold text-navy-800 sm:text-3xl" data-reveal>
+          Why it matters for Ghanaian &amp; West African clients
+        </h2>
+        <p class="mt-5 text-lg leading-relaxed text-navy-600" data-reveal style="--reveal-delay:80ms">
+          {service.whyItMatters}
+        </p>
+      </div>
+
+      <!-- Sidebar -->
+      <aside class="lg:sticky lg:top-28 lg:self-start">
+        <div class="rounded-2xl border border-navy-100 bg-navy-50/60 p-7" data-reveal>
+          <h2 class="font-display text-lg font-semibold text-navy-800">Capabilities</h2>
+          <ul class="mt-5 space-y-3">
+            {
+              service.capabilities.map((cap) => (
+                <li class="flex items-start gap-3 text-sm text-navy-600">
+                  <Icon name="check" size={18} class="mt-0.5 shrink-0 text-red-600" />
+                  <span>{cap}</span>
+                </li>
+              ))
+            }
+          </ul>
+
+          <div class="mt-7 border-t border-navy-100 pt-6">
+            <p class="text-sm leading-relaxed text-navy-500">
+              Planning a {service.short.toLowerCase()} project in Ghana? Our
+              engineers will help you scope it.
+            </p>
+            <div class="mt-5">
+              <Button href="/contact" variant="primary" class="w-full">Request a quote</Button>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- Related services -->
+  <section class="border-t border-navy-100 bg-navy-50/60 py-20 lg:py-24">
+    <div class="container-page">
+      <div class="flex items-end justify-between gap-6">
+        <div>
+          <p class="eyebrow" data-reveal>Related services</p>
+          <h2 class="mt-3 font-display text-2xl font-bold text-navy-800 sm:text-3xl" data-reveal>
+            Explore more of what we build
+          </h2>
+        </div>
+        <a href="/services" class="hidden shrink-0 items-center gap-1.5 text-sm font-semibold text-red-600 hover:text-red-700 sm:inline-flex">
+          All services <Icon name="arrowRight" size={16} />
+        </a>
+      </div>
+
+      <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          related.map((r, i) => (
+            <a
+              href={`/services/${r.slug}`}
+              data-reveal
+              style={`--reveal-delay:${i * 80}ms`}
+              class="group flex items-center gap-4 rounded-2xl border border-navy-100 bg-white p-5 transition hover:border-red-200 hover:shadow-lg"
+            >
+              <span class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-navy-50 text-red-600 transition group-hover:bg-red-600 group-hover:text-white">
+                <Icon name={r.icon} size={22} />
+              </span>
+              <span class="min-w-0">
+                <span class="block font-display text-base font-semibold text-navy-800">{r.short}</span>
+                <span class="mt-0.5 block truncate text-sm text-navy-500">{r.summary}</span>
+              </span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>

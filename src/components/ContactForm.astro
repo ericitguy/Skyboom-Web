@@ -1,0 +1,202 @@
+---
+import Icon from './Icon.astro';
+import { services } from '../data/site';
+---
+<form id="contact-form" class="space-y-5" novalidate>
+  <div class="grid gap-5 sm:grid-cols-2">
+    <div class="space-y-1.5">
+      <label for="cf-name" class="block text-sm font-medium text-navy-700">
+        Full name <span class="text-red-600" aria-hidden="true">*</span>
+      </label>
+      <input
+        id="cf-name"
+        name="name"
+        type="text"
+        required
+        autocomplete="name"
+        class="field"
+        aria-describedby="cf-name-error"
+      />
+      <p id="cf-name-error" class="field-error" data-error-for="name" hidden></p>
+    </div>
+
+    <div class="space-y-1.5">
+      <label for="cf-email" class="block text-sm font-medium text-navy-700">
+        Email <span class="text-red-600" aria-hidden="true">*</span>
+      </label>
+      <input
+        id="cf-email"
+        name="email"
+        type="email"
+        required
+        autocomplete="email"
+        class="field"
+        aria-describedby="cf-email-error"
+      />
+      <p id="cf-email-error" class="field-error" data-error-for="email" hidden></p>
+    </div>
+  </div>
+
+  <div class="grid gap-5 sm:grid-cols-2">
+    <div class="space-y-1.5">
+      <label for="cf-phone" class="block text-sm font-medium text-navy-700">Phone</label>
+      <input
+        id="cf-phone"
+        name="phone"
+        type="tel"
+        autocomplete="tel"
+        class="field"
+        placeholder="+233 …"
+      />
+    </div>
+
+    <div class="space-y-1.5">
+      <label for="cf-service" class="block text-sm font-medium text-navy-700">Service of interest</label>
+      <select id="cf-service" name="service" class="field">
+        <option value="">General enquiry</option>
+        {services.map((s) => <option value={s.title}>{s.title}</option>)}
+      </select>
+    </div>
+  </div>
+
+  <div class="space-y-1.5">
+    <label for="cf-message" class="block text-sm font-medium text-navy-700">
+      Project details <span class="text-red-600" aria-hidden="true">*</span>
+    </label>
+    <textarea
+      id="cf-message"
+      name="message"
+      rows="5"
+      required
+      class="field resize-y"
+      aria-describedby="cf-message-error"
+      placeholder="Tell us about your project scope, location and timeline…"
+    ></textarea>
+    <p id="cf-message-error" class="field-error" data-error-for="message" hidden></p>
+  </div>
+
+  <!-- Honeypot for basic spam protection -->
+  <div class="hidden" aria-hidden="true">
+    <label>Leave this field empty<input type="text" name="company_website" tabindex="-1" autocomplete="off" /></label>
+  </div>
+
+  <button
+    type="submit"
+    class="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-red-600 px-7 py-3.5 text-base font-semibold text-white shadow-sm transition hover:bg-red-700 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+  >
+    <span data-btn-label>Send message</span>
+    <Icon name="arrowRight" size={18} class="transition-transform group-hover:translate-x-0.5" />
+  </button>
+
+  <!-- Success / status region -->
+  <div
+    id="cf-status"
+    role="status"
+    aria-live="polite"
+    class="hidden items-start gap-3 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-900"
+  >
+    <span class="mt-0.5 shrink-0 text-red-600"><Icon name="checkCircle" size={20} /></span>
+    <span>
+      <strong class="font-semibold">Thank you — your message is ready to send.</strong>
+      Our team typically responds within one business day. For urgent enquiries,
+      call <a href="tel:+233245144844" class="font-semibold underline">+233 (0) 245 144 844</a>.
+    </span>
+  </div>
+</form>
+
+<style>
+  .field {
+    width: 100%;
+    border-radius: 0.75rem;
+    border: 1px solid var(--color-navy-200);
+    background: #fff;
+    padding: 0.7rem 0.9rem;
+    font-size: 0.95rem;
+    color: var(--color-navy-800);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .field::placeholder {
+    color: var(--color-navy-300);
+  }
+  .field:focus {
+    outline: none;
+    border-color: var(--color-navy-400);
+    box-shadow: 0 0 0 3px rgba(37, 89, 160, 0.2);
+  }
+  .field[aria-invalid='true'] {
+    border-color: #dc2626;
+  }
+  .field-error {
+    font-size: 0.8rem;
+    color: #dc2626;
+  }
+</style>
+
+<script>
+  function initContactForm() {
+    const form = document.getElementById('contact-form') as HTMLFormElement | null;
+    if (!form || form.dataset.bound) return;
+    form.dataset.bound = 'true';
+
+    const status = document.getElementById('cf-status');
+    const btnLabel = form.querySelector('[data-btn-label]');
+
+    const showError = (name: string, msg: string) => {
+      const field = form.querySelector<HTMLElement>(`[name="${name}"]`);
+      const err = form.querySelector<HTMLElement>(`[data-error-for="${name}"]`);
+      if (field) field.setAttribute('aria-invalid', 'true');
+      if (err) {
+        err.textContent = msg;
+        err.hidden = false;
+      }
+    };
+    const clearError = (name: string) => {
+      const field = form.querySelector<HTMLElement>(`[name="${name}"]`);
+      const err = form.querySelector<HTMLElement>(`[data-error-for="${name}"]`);
+      if (field) field.removeAttribute('aria-invalid');
+      if (err) err.hidden = true;
+    };
+
+    // Live-clear errors as the user corrects them
+    ['name', 'email', 'message'].forEach((n) => {
+      form.querySelector(`[name="${n}"]`)?.addEventListener('input', () => clearError(n));
+    });
+
+    const isEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+
+      // Honeypot: silently succeed for bots
+      if ((data.get('company_website') as string)?.length) return;
+
+      let ok = true;
+      const name = (data.get('name') as string)?.trim() ?? '';
+      const email = (data.get('email') as string)?.trim() ?? '';
+      const message = (data.get('message') as string)?.trim() ?? '';
+
+      if (name.length < 2) { showError('name', 'Please enter your name.'); ok = false; }
+      if (!isEmail(email)) { showError('email', 'Please enter a valid email address.'); ok = false; }
+      if (message.length < 10) { showError('message', 'Please add a little more detail (min 10 characters).'); ok = false; }
+
+      if (!ok) {
+        form.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus();
+        return;
+      }
+
+      // No backend is wired in this static build. In production, POST to your
+      // form endpoint (Formspree, Netlify Forms, an API route, etc.) here.
+      if (btnLabel) btnLabel.textContent = 'Message sent';
+      status?.classList.remove('hidden');
+      status?.classList.add('flex');
+      form.querySelectorAll<HTMLInputElement>('input, textarea, select').forEach((el) => {
+        if (el.type !== 'submit') el.value = '';
+      });
+      status?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+  }
+
+  initContactForm();
+  document.addEventListener('astro:after-swap', initContactForm);
+</script>

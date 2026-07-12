@@ -1,0 +1,59 @@
+# ==========================================================================
+# Skyboom Ghana Limited — Apache / cPanel config for the static Astro build
+# ==========================================================================
+
+# Deterministic routing: no directory listings, no content-negotiation guesses,
+# and don't auto-redirect /dir -> /dir/ (which is what broke /services, since a
+# "services/" folder exists alongside services.html).
+Options -Indexes -MultiViews +FollowSymLinks
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  DirectorySlash Off
+
+  # ---- Force HTTPS + www (canonical host is https://www.skyboomgh.com) ------
+  RewriteCond %{HTTPS} off [OR]
+  RewriteCond %{HTTP_HOST} !^www\. [NC]
+  RewriteRule ^ https://www.skyboomgh.com%{REQUEST_URI} [L,R=301]
+
+  # ---- Clean URLs -----------------------------------------------------------
+  # Serve /about from about.html, /services from services.html, etc.
+  # We test ONLY for the matching .html file (no !-d guard), so an extensionless
+  # URL still resolves to its .html even when a same-named directory exists
+  # (e.g. /services  ->  services.html, while /services/... stays a folder).
+  RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+  RewriteRule ^(.+?)/?$ /$1.html [L]
+
+  # Optional: if a visitor types the .html, redirect to the clean URL.
+  RewriteCond %{THE_REQUEST} \s/+([^?\s]+?)\.html[\s?] [NC]
+  RewriteRule ^ /%1 [R=301,L]
+</IfModule>
+
+# ---- Custom error page -----------------------------------------------------
+ErrorDocument 404 /404.html
+
+# ---- Compression -----------------------------------------------------------
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml \
+    application/javascript application/json application/xml \
+    image/svg+xml application/rss+xml
+</IfModule>
+
+# ---- Browser caching -------------------------------------------------------
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css                A31536000
+  ExpiresByType application/javascript  A31536000
+  ExpiresByType image/webp              A31536000
+  ExpiresByType image/png               A2592000
+  ExpiresByType image/jpeg              A2592000
+  ExpiresByType image/svg+xml           A2592000
+  ExpiresByType font/woff2              A31536000
+  ExpiresByType text/html               A3600
+</IfModule>
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.(css|js|woff2|webp)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+</IfModule>

@@ -1,0 +1,195 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Icon from '../components/Icon.astro';
+import NetworkMotif from '../components/NetworkMotif.astro';
+import CTASection from '../components/CTASection.astro';
+import { differentiators, stats } from '../data/site';
+import { breadcrumbSchema } from '../lib/schema';
+import safetyBuild from '../assets/safety-build.png';
+
+const seo = {
+  title: 'About Skyboom Ghana Limited | Telecom Company in Tema',
+  description:
+    'Learn about Skyboom Ghana Limited — a 100% Ghanaian-owned telecom infrastructure provider established in 2017 in Tema, driven by quality, safety and engineering integrity.',
+  path: '/about',
+};
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'About', path: '/about' },
+];
+
+const values = [
+  { icon: 'target', t: 'Quality', d: 'We engineer and build to international standards, documented and tested, so infrastructure performs for years.' },
+  { icon: 'hardhat', t: 'Safety', d: 'A strong Health & Safety culture protects our people, your assets and the communities we work in.' },
+  { icon: 'zap', t: 'Efficiency', d: 'Coordinated teams and disciplined delivery shorten time-to-air without cutting corners.' },
+  { icon: 'flag', t: 'Local ownership', d: '100% Ghanaian-owned, combining local insight with world-class engineering practice.' },
+];
+---
+<BaseLayout {...seo} schemas={[breadcrumbSchema(crumbs)]}>
+  <!-- Hero -->
+  <section class="relative isolate overflow-hidden bg-navy-900 pt-20 text-white">
+    <div class="absolute inset-0 -z-10 opacity-50" aria-hidden="true"><NetworkMotif /></div>
+    <div class="absolute inset-0 -z-10 bg-gradient-to-b from-navy-900/40 to-navy-900"></div>
+    <div class="pointer-events-none absolute -right-24 -top-16 -z-10 h-96 w-96 rounded-full bg-red-600/20 blur-3xl" aria-hidden="true"></div>
+
+    <div class="container-page py-20 lg:py-24">
+      <div data-reveal><Breadcrumbs crumbs={crumbs} /></div>
+      <div class="mt-8 max-w-3xl">
+        <p class="eyebrow text-red-300" data-reveal>
+          <span class="inline-block h-1.5 w-1.5 rounded-full bg-red-400"></span>
+          About Skyboom
+        </p>
+        <h1 class="mt-5 font-display text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl" data-reveal style="--reveal-delay:60ms">
+          Building Ghana's telecom backbone
+          <span class="bg-gradient-to-r from-red-400 to-red-600 bg-clip-text text-transparent"> since 2017</span>
+        </h1>
+        <p class="mt-6 max-w-2xl text-lg leading-relaxed text-navy-100 sm:text-xl" data-reveal style="--reveal-delay:140ms">
+          Skyboom Ghana Limited is a 100% Ghanaian-owned telecom services provider
+          based in Tema — combining local knowledge with international engineering
+          standards to build infrastructure that lasts.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Story -->
+  <section class="py-20 lg:py-28">
+    <div class="container-page grid items-start gap-14 lg:grid-cols-2 lg:gap-20">
+      <div>
+        <p class="eyebrow" data-reveal>Our story</p>
+        <h2 class="mt-4 font-display text-3xl font-bold text-navy-800 sm:text-4xl" data-reveal>
+          A Ghanaian company built on engineering integrity
+        </h2>
+        <div class="mt-6 space-y-5 text-lg leading-relaxed text-navy-500" data-reveal style="--reveal-delay:80ms">
+          <p>
+            Established in 2017 and headquartered in Community 22, Tema, Skyboom
+            Ghana Limited was founded to raise the standard of telecom
+            infrastructure delivery in Ghana. As a wholly Ghanaian-owned business,
+            we understand the local ground, climate, grid and regulatory landscape
+            in a way that matters on every project.
+          </p>
+          <p>
+            Over the years we've grown into a full-service telecom infrastructure
+            partner — deploying networks, installing equipment from the world's
+            leading manufacturers, laying and splicing fibre, building FTTH access
+            networks, aligning microwave links, delivering civil works and
+            designing resilient data centres across Ghana and West Africa.
+          </p>
+          <p>
+            What ties it together is a simple commitment: quality, safety and
+            efficiency on every build. Backed by the financial stability to
+            partner-finance projects, we help clients move on critical
+            infrastructure with confidence.
+          </p>
+        </div>
+      </div>
+
+      <div class="overflow-hidden rounded-3xl border border-navy-100 shadow-xl" data-reveal style="--reveal-delay:120ms">
+        <Image
+          src={safetyBuild}
+          alt="Telecom tower and civil build works representing Skyboom's infrastructure projects in Ghana"
+          class="h-full w-full object-cover"
+          widths={[600, 900, 1200]}
+          sizes="(min-width: 1024px) 45vw, 100vw"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats band -->
+  <section class="border-y border-navy-100 bg-navy-50/60 py-16">
+    <div class="container-page">
+      <dl class="grid grid-cols-2 gap-8 text-center sm:grid-cols-4">
+        {
+          stats.map((s) => (
+            <div data-reveal>
+              <dd class="font-display text-4xl font-bold text-navy-800 sm:text-5xl">
+                <span data-count={s.value} data-prefix={s.prefix ?? ''} data-suffix={s.suffix ?? ''}>
+                  {s.prefix ?? ''}0{s.suffix ?? ''}
+                </span>
+              </dd>
+              <dt class="mt-2 text-sm font-medium uppercase tracking-wider text-navy-500">{s.label}</dt>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
+  <!-- Mission + Values -->
+  <section class="py-20 lg:py-28">
+    <div class="container-page">
+      <div class="mx-auto max-w-3xl text-center">
+        <p class="eyebrow justify-center" data-reveal>Mission &amp; values</p>
+        <h2 class="mt-4 font-display text-3xl font-bold text-navy-800 sm:text-4xl" data-reveal>
+          To build reliable, safe and efficient telecom infrastructure for Ghana
+        </h2>
+        <p class="mt-5 text-lg leading-relaxed text-navy-500" data-reveal style="--reveal-delay:80ms">
+          Our mission is to connect Ghana and West Africa with infrastructure that
+          operators, ISPs, enterprises and institutions can depend on — delivered
+          to the highest standards of quality and safety.
+        </p>
+      </div>
+
+      <div class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          values.map((v, i) => (
+            <div
+              data-reveal
+              style={`--reveal-delay:${(i % 4) * 80}ms`}
+              class="rounded-2xl border border-navy-100 bg-white p-7 transition hover:border-red-200 hover:shadow-lg"
+            >
+              <div class="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-red-400/15 text-red-600">
+                <Icon name={v.icon} size={24} />
+              </div>
+              <h3 class="mt-5 font-display text-lg font-semibold text-navy-800">{v.t}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-navy-500">{v.d}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Safety commitment -->
+  <section class="relative overflow-hidden bg-navy-900 py-20 text-white lg:py-24">
+    <div class="pointer-events-none absolute inset-0 opacity-20" aria-hidden="true"><NetworkMotif /></div>
+    <div class="container-page relative grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
+      <div>
+        <p class="eyebrow text-red-400" data-reveal>
+          <span class="inline-block h-1.5 w-1.5 rounded-full bg-red-400"></span>
+          Health &amp; Safety commitment
+        </p>
+        <h2 class="mt-4 font-display text-3xl font-bold sm:text-4xl" data-reveal>
+          Safety is the foundation of quality
+        </h2>
+        <p class="mt-6 text-lg leading-relaxed text-navy-100" data-reveal style="--reveal-delay:80ms">
+          We believe that how you build determines how well it works — and how
+          safely it's built determines everything. Skyboom embeds Health &amp;
+          Safety into planning, execution and maintenance, protecting our teams
+          and delivering infrastructure our clients can trust.
+        </p>
+      </div>
+      <ul class="grid gap-4" data-reveal style="--reveal-delay:120ms">
+        {
+          differentiators.map((d) => (
+            <li class="flex items-start gap-4 rounded-2xl border border-white/10 bg-white/[0.04] p-5">
+              <span class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-red-400/15 text-red-300">
+                <Icon name={d.icon} size={20} />
+              </span>
+              <span>
+                <span class="block font-display text-base font-semibold text-white">{d.title}</span>
+                <span class="mt-1 block text-sm leading-relaxed text-navy-200">{d.body}</span>
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <CTASection heading="Let's build something reliable together" />
+</BaseLayout>

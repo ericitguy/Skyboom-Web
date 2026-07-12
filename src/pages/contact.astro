@@ -1,0 +1,153 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Icon from '../components/Icon.astro';
+import NetworkMotif from '../components/NetworkMotif.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { site, nap } from '../data/site';
+import { breadcrumbSchema } from '../lib/schema';
+
+const seo = {
+  title: 'Contact Skyboom Ghana Limited | Tema, Ghana',
+  description:
+    'Contact Skyboom Ghana Limited for telecom infrastructure projects in Ghana. Call +233 (0) 245 144 844 or visit us at No. 9 Enyidado Avenue, Community 22, Tema.',
+  path: '/contact',
+};
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Contact', path: '/contact' },
+];
+
+const mapQuery = encodeURIComponent(
+  `${nap.streetAddress}, ${nap.locality}, ${nap.country}`
+);
+const mapEmbed = `https://www.google.com/maps?q=${mapQuery}&z=15&output=embed`;
+const mapLink = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
+---
+<BaseLayout {...seo} schemas={[breadcrumbSchema(crumbs)]}>
+  <!-- Hero -->
+  <section class="relative isolate overflow-hidden bg-navy-900 pt-20 text-white">
+    <div class="absolute inset-0 -z-10 opacity-50" aria-hidden="true"><NetworkMotif /></div>
+    <div class="absolute inset-0 -z-10 bg-gradient-to-b from-navy-900/40 to-navy-900"></div>
+    <div class="pointer-events-none absolute -right-24 -top-16 -z-10 h-96 w-96 rounded-full bg-red-600/20 blur-3xl" aria-hidden="true"></div>
+
+    <div class="container-page py-20 lg:py-24">
+      <div data-reveal><Breadcrumbs crumbs={crumbs} /></div>
+      <div class="mt-8 max-w-3xl">
+        <p class="eyebrow text-red-300" data-reveal>
+          <span class="inline-block h-1.5 w-1.5 rounded-full bg-red-400"></span>
+          Get in touch
+        </p>
+        <h1 class="mt-5 font-display text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl" data-reveal style="--reveal-delay:60ms">
+          Let's talk about
+          <span class="bg-gradient-to-r from-red-400 to-red-600 bg-clip-text text-transparent"> your project</span>
+        </h1>
+        <p class="mt-6 max-w-2xl text-lg leading-relaxed text-navy-100 sm:text-xl" data-reveal style="--reveal-delay:140ms">
+          Whether you're planning a network rollout, a fibre build or a data
+          centre in Ghana, our engineers are ready to help. Reach out and we'll
+          respond within one business day.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact grid -->
+  <section class="py-20 lg:py-24">
+    <div class="container-page grid gap-14 lg:grid-cols-[1fr_1.15fr] lg:gap-16">
+      <!-- NAP / details -->
+      <div>
+        <p class="eyebrow" data-reveal>Get in touch</p>
+        <h2 class="mt-4 font-display text-2xl font-bold text-navy-800 sm:text-3xl" data-reveal>
+          Contact details
+        </h2>
+        <p class="mt-4 text-navy-500" data-reveal style="--reveal-delay:60ms">
+          Based in Community 22, Tema — serving clients across Ghana and West Africa.
+        </p>
+
+        <address class="mt-8 space-y-5 not-italic" data-reveal style="--reveal-delay:120ms">
+          <a href={mapLink} target="_blank" rel="noopener" class="group flex items-start gap-4">
+            <span class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-navy-50 text-red-600 transition group-hover:bg-red-600 group-hover:text-white">
+              <Icon name="mapPin" size={22} />
+            </span>
+            <span>
+              <span class="block text-sm font-semibold uppercase tracking-wide text-navy-400">Visit us</span>
+              <span class="mt-1 block text-navy-800">
+                {nap.name}<br />
+                {nap.streetAddress}<br />
+                {nap.locality}, {nap.country}
+              </span>
+            </span>
+          </a>
+
+          <a href={`tel:${nap.phoneE164}`} class="group flex items-start gap-4">
+            <span class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-navy-50 text-red-600 transition group-hover:bg-red-600 group-hover:text-white">
+              <Icon name="phone" size={22} />
+            </span>
+            <span>
+              <span class="block text-sm font-semibold uppercase tracking-wide text-navy-400">Call us</span>
+              <span class="mt-1 block text-navy-800">{nap.phoneDisplay}</span>
+            </span>
+          </a>
+
+          <a href={`mailto:${site.email}`} class="group flex items-start gap-4">
+            <span class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-navy-50 text-red-600 transition group-hover:bg-red-600 group-hover:text-white">
+              <Icon name="mail" size={22} />
+            </span>
+            <span>
+              <span class="block text-sm font-semibold uppercase tracking-wide text-navy-400">Email us</span>
+              <span class="mt-1 block text-navy-800">{site.email}</span>
+            </span>
+          </a>
+
+          <div class="flex items-start gap-4">
+            <span class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-navy-50 text-red-600">
+              <Icon name="clock" size={22} />
+            </span>
+            <span>
+              <span class="block text-sm font-semibold uppercase tracking-wide text-navy-400">Opening hours</span>
+              <span class="mt-1 block text-navy-800">Monday – Saturday: 8:00 – 17:30</span>
+              <span class="block text-navy-500">Sunday: Closed</span>
+            </span>
+          </div>
+        </address>
+      </div>
+
+      <!-- Form -->
+      <div class="rounded-3xl border border-navy-100 bg-white p-7 shadow-lg sm:p-9" data-reveal style="--reveal-delay:100ms">
+        <h2 class="font-display text-2xl font-bold text-navy-800">Send us a message</h2>
+        <p class="mt-2 text-sm text-navy-500">
+          Fields marked <span class="text-red-600">*</span> are required.
+        </p>
+        <div class="mt-7">
+          <ContactForm />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Map -->
+  <section class="pb-4">
+    <div class="container-page">
+      <div class="overflow-hidden rounded-3xl border border-navy-100 shadow-lg" data-reveal>
+        <iframe
+          title={`Map showing ${nap.name} at ${nap.streetAddress}, ${nap.locality}, ${nap.country}`}
+          src={mapEmbed}
+          width="100%"
+          height="440"
+          style="border:0; display:block;"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          allowfullscreen
+        ></iframe>
+      </div>
+      <p class="mt-4 text-center text-sm text-navy-500">
+        <a href={mapLink} target="_blank" rel="noopener" class="link-underline font-medium text-red-600">
+          Open in Google Maps →
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <div class="py-16"></div>
+</BaseLayout>

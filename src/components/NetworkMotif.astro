@@ -1,0 +1,44 @@
+---
+/**
+ * Decorative animated fibre-optic / network line motif.
+ * Pure SVG + CSS animation (see .fibre-line / .pulse-node in global.css),
+ * which is paused under prefers-reduced-motion. Purely decorative → aria-hidden.
+ */
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+---
+<svg
+  class={className}
+  viewBox="0 0 1200 600"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+  preserveAspectRatio="xMidYMid slice"
+  aria-hidden="true"
+  width="100%"
+  height="100%"
+>
+  <defs>
+    <linearGradient id="motif-teal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#4574bd" />
+      <stop offset="100%" stop-color="#7ba0d6" />
+    </linearGradient>
+  </defs>
+
+  <g stroke="url(#motif-teal)" stroke-width="1.5">
+    <path class="fibre-line" d="M-20 120 C 260 120, 320 300, 600 300 S 940 480, 1220 480" />
+    <path class="fibre-line" style="animation-delay:-6s" d="M-20 300 C 300 300, 360 140, 640 140 S 980 320, 1220 320" />
+    <path class="fibre-line" style="animation-delay:-12s" d="M-20 460 C 240 460, 340 240, 600 240 S 960 120, 1220 120" />
+    <path class="fibre-line" style="animation-delay:-3s" d="M-20 220 C 280 220, 380 420, 660 420 S 1000 520, 1220 520" />
+  </g>
+
+  <g fill="#ea5a58">
+    <circle class="pulse-node" cx="260" cy="120" r="3" />
+    <circle class="pulse-node" style="animation-delay:-1s" cx="600" cy="300" r="3" />
+    <circle class="pulse-node" style="animation-delay:-2s" cx="640" cy="140" r="3" />
+    <circle class="pulse-node" style="animation-delay:-1.6s" cx="600" cy="240" r="3" />
+    <circle class="pulse-node" style="animation-delay:-2.4s" cx="960" cy="120" r="3" />
+    <circle class="pulse-node" style="animation-delay:-0.6s" cx="340" cy="240" r="3" />
+  </g>
+</svg>

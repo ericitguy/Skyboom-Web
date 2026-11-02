@@ -19,7 +19,7 @@ export const site = {
   email: 'info@skyboomgh.com',
   tagline: 'Telecom Infrastructure Built to Last',
   description:
-    'Skyboom Ghana Limited is a 100% Ghanaian-owned telecom services provider in Tema, building network infrastructure across Ghana and West Africa with a focus on quality, safety and efficiency.',
+    'Skyboom Ghana Limited is a 100% Ghanaian-owned telecom services provider in Accra, building network infrastructure across Ghana and West Africa with a focus on quality, safety and efficiency.',
 } as const;
 
 /** Canonical NAP — do not edit these strings casually; they must match every citation. */
@@ -28,16 +28,16 @@ export const nap = {
   phoneDisplay: '+233 (0) 245 144 844',
   // E.164 for tel: links and JSON-LD
   phoneE164: '+233245144844',
-  streetAddress: 'No. 9 Enyidado Avenue, Community 22',
-  locality: 'Tema',
+  streetAddress: 'Agba We Road, Haymill Close, Tse-Addo',
+  locality: 'Accra',
   region: 'Greater Accra',
   country: 'Ghana',
   countryCode: 'GH',
   postalCode: '',
-  // Approximate coordinates for Community 22, Tema — used for JSON-LD geo + map.
+  // Approximate coordinates for Tse-Addo, Accra — used for JSON-LD geo + map.
   geo: {
-    latitude: 5.6698,
-    longitude: 0.0166,
+    latitude: 5.5714,
+    longitude: -0.1353,
   },
 } as const;
 
@@ -371,7 +371,7 @@ export const faqs = [
   },
   {
     q: 'Where is Skyboom based and what areas do you cover?',
-    a: 'Skyboom Ghana Limited is based in Community 22, Tema, in the Greater Accra Region. We deliver telecom infrastructure projects across Ghana and the wider West African region.',
+    a: 'Skyboom Ghana Limited is based in Tse-Addo, Accra, in the Greater Accra Region. We deliver telecom infrastructure projects across Ghana and the wider West African region.',
   },
   {
     q: 'Is Skyboom a Ghanaian-owned company?',

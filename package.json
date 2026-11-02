@@ -2,7 +2,7 @@
   "name": "skyboom-ghana",
   "type": "module",
   "version": "1.0.0",
-  "description": "Marketing website for Skyboom Ghana Limited — telecom infrastructure services provider based in Tema, Ghana.",
+  "description": "Marketing website for Skyboom Ghana Limited — telecom infrastructure services provider based in Accra, Ghana.",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
